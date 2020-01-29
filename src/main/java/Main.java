@@ -4,6 +4,7 @@ import org.javacord.api.entity.activity.ActivityType;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.emoji.Emoji;
 import org.javacord.api.entity.message.MessageSet;
+import org.javacord.api.entity.permission.PermissionType;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -13,10 +14,11 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 import java.util.Random;
 
+
 public class Main {
 
     public static void main(String[] args) {
-        String token = "NjE3NDczMTAxODUyMTgwNDg4.XXGumg.E_SqMQtUN7xyB-hKiA78oQgVhB0";
+        String token = "NjE3NDczMTAxODUyMTgwNDg4.XjC3IQ.5D_wj1ZBVy1so7RJC5h2TS7hs-E";
 
         List<Long> miningPlayers = new ArrayList<Long>();
 
@@ -40,6 +42,8 @@ public class Main {
                     int numDelete = Integer.parseInt(event.getMessageContent().split(" ")[1]);
                     if (numDelete < 0) {
                         event.getChannel().sendMessage("You must delete a positive number of messages!");
+                    } else if (numDelete > 30) {
+                        event.getChannel().sendMessage("Be careful, that's a lot of messages!");
                     } else {
                         event.getChannel().getMessages(numDelete + 1).get().deleteAll();
                         event.getChannel().sendMessage(event.getMessageAuthor().asUser().get().getNicknameMentionTag() + " just deleted " + numDelete + " messages!");
@@ -59,6 +63,7 @@ public class Main {
         });
 
         // Bot status
+        /*
         String[] gameArray = new String[5];
         gameArray[0] = "Cherry Blossoms";
         gameArray[1] = "Daffodils";
@@ -70,16 +75,18 @@ public class Main {
         int randomGame = random.nextInt(gameArray.length);
 
         api.updateActivity(ActivityType.WATCHING, gameArray[randomGame] + " Grow");
+        */
+        api.updateActivity(ActivityType.WATCHING, "RYAN SLEEP");
 
         // Checking if players are mining
         new Timer().scheduleAtFixedRate(
                 new TimerTask() {
                     @Override
                     public void run() {
-                        api.getServerById(482672081826349057l).get().getMembers().forEach(m -> {
+                        api.getServerById(592488893484630016l).get().getMembers().forEach(m -> {
                             m.getActivity().ifPresent(a -> {
                                 if (a.getType().equals(ActivityType.PLAYING) && a.getName().toLowerCase().contains("minecraft")) {
-                                    if (!miningPlayers.contains(m.getId())) api.getTextChannelById(619341358221492225l).get().sendMessage(m.getNicknameMentionTag() + " IS MINING"
+                                    if (!miningPlayers.contains(m.getId())) api.getTextChannelById(671848020660453388l).get().sendMessage(m.getNicknameMentionTag() + " IS MINING "
                                             + "https://www.youtube.com/watch?v=kMlLz7stjwc");
                                     miningPlayers.add(m.getId());
                                 } else if (miningPlayers.contains(m.getId())) {
