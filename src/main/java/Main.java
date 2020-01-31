@@ -24,16 +24,29 @@ public class Main {
 
         DiscordApi api = new DiscordApiBuilder().setToken(token).login().join();
 
+        // Bot status
+        String[] gameArray = new String[]{"Cherry Blossoms", "Daffodils", "Carnations", "Violets", "Roses"};
+        Random random = new Random();
+        int randomGame = random.nextInt(gameArray.length);
+
+        api.updateActivity(ActivityType.WATCHING, gameArray[randomGame] + " Grow");
+        //api.updateActivity(ActivityType.WATCHING, "RYAN SLEEP");
+
         api.addMessageCreateListener(event -> {
 
-            // Testing first commands
+            // Testing basic commands
             if (event.getMessage().getContent().equalsIgnoreCase("nani")) {
                 event.getChannel().sendMessage("https://www.youtube.com/watch?v=vxKBHX9Datw");
+                event.getMessage().addReaction(EmojiUnicode.parseEmojiUnicode("\uD83C\uDF46"));
             }
 
             if (event.getMessage().getContent().equalsIgnoreCase("no u")
                     || event.getMessage().getContent().equalsIgnoreCase("no you")) {
                 event.getChannel().sendMessage("https://i.imgur.com/yXEiYQ4.jpg");
+            }
+
+            if (event.getMessage().getContent().equalsIgnoreCase("@Nani SHTAAAAALP PLZZZZZ")) {
+                event.getChannel().sendMessage(":Banhammer:");
             }
 
             // Delete # of messages
@@ -55,28 +68,8 @@ public class Main {
                         event.getChannel().sendMessage("You must specify a number of messages to delete!");
                     }
                 }
-
             }
-
-            //event.getMessage().addReaction(parseEmojiUnicode("\uD83C\uDF46"));
-
         });
-
-        // Bot status
-        /*
-        String[] gameArray = new String[5];
-        gameArray[0] = "Cherry Blossoms";
-        gameArray[1] = "Daffodils";
-        gameArray[2] = "Carnations";
-        gameArray[3] = "Violets";
-        gameArray[4] = "Roses";
-
-        Random random = new Random();
-        int randomGame = random.nextInt(gameArray.length);
-
-        api.updateActivity(ActivityType.WATCHING, gameArray[randomGame] + " Grow");
-        */
-        api.updateActivity(ActivityType.WATCHING, "RYAN SLEEP");
 
         // Checking if players are mining
         new Timer().scheduleAtFixedRate(
@@ -95,25 +88,5 @@ public class Main {
                             });
                         });
                     }}, 0, 10000);
-    }
-
-    // Creating unicode emojis
-    public static Emoji parseEmojiUnicode(String unicodeEmoji) {
-        return new Emoji() {
-            @Override
-            public Optional<String> asUnicodeEmoji() {
-                return Optional.of(unicodeEmoji);
-            }
-
-            @Override
-            public boolean isAnimated() {
-                return false;
-            }
-
-            @Override
-            public String getMentionTag() {
-                return null;
-            }
-        };
     }
 }
